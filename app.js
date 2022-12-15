@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import GroupCreationPage from './GroupCreationPage';
@@ -28,13 +29,16 @@ const reducer = (state = initialState, action) => {
 
 const store = createStore(reducer);
 
-const App = () => (
-  <Provider store={store}>
-    <View>
-      <GroupCreationPage />
-      <ExpensesPage />
-    </View>
-  </Provider>
-);
+const AppNavigator = createStackNavigator({
+  GroupCreation: {
+    screen: GroupCreationPage,
+  },
+  Expenses: {
+    screen: ExpensesPage,
+  },
+}, {
+  initialRouteName: 'GroupCreation',
+});
 
-export default App;
+const App = () => {
+  const AppContainer = createApp
