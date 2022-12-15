@@ -7,19 +7,14 @@ import GroupCreationPage from './GroupCreationPage';
 import ExpensesPage from './ExpensesPage';
 
 const initialState = {
-  group: {
-    name: '',
-    members: []
-  },
+  groups: [],
   expenses: []
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_GROUP_NAME':
-      return { ...state, group: { ...state.group, name: action.name } };
-    case 'ADD_MEMBER':
-      return { ...state, group: { ...state.group, members: [...state.group.members, action.member] } };
+    case 'ADD_GROUP':
+      return { ...state, groups: [...state.groups, action.group] };
     case 'ADD_EXPENSE':
       return { ...state, expenses: [...state.expenses, action.expense] };
     default:
@@ -41,4 +36,13 @@ const AppNavigator = createStackNavigator({
 });
 
 const App = () => {
-  const AppContainer = createApp
+  const AppContainer = createAppContainer(AppNavigator);
+
+  return (
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  );
+};
+
+export default App;
