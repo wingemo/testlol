@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, TextInput, Button, FlatList } from 'react-native-elements';
+import { connect } from 'react-redux';
 
-const ExpensesPage = () => {
-  const [expenses, setExpenses] = useState([]);
+const ExpensesPage = ({ expenses, addExpense }) => {
+  const [amount, setAmount] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState('');
 
-  const addExpense = (amount, paymentMethod) => {
-    setExpenses([...expenses, { amount, paymentMethod }]);
+  const addExpense = () => {
+    addExpense({ amount, paymentMethod });
   }
 
   return (
@@ -23,7 +25,7 @@ const ExpensesPage = () => {
       />
       <Button
         title="Add expense"
-        onPress={() => addExpense(amount, paymentMethod)}
+        onPress={addExpense}
       />
       <FlatList
         data={expenses}
@@ -39,4 +41,12 @@ const ExpensesPage = () => {
   );
 }
 
-export default ExpensesPage;
+const mapStateToProps = (state) => ({
+  expenses: state.expenses
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addExpense: (expense) => dispatch({ type: 'ADD_EXPENSE', expense }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpensesPage);
