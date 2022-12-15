@@ -1,19 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, TextInput, Button, FlatList } from 'react-native-elements';
+import { connect } from 'react-redux';
 
-const GroupCreationPage = () => {
-  const [groupName, setGroupName] = useState('');
-  const [members, setMembers] = useState([]);
-
+const GroupCreationPage = ({ group, setGroupName, addMember }) => {
   const addMember = (name) => {
-    setMembers([...members, name]);
+    addMember(name);
   }
 
   return (
     <View>
       <TextInput
         placeholder="Enter group name"
-        value={groupName}
+        value={group.name}
         onChangeText={setGroupName}
       />
       <Button
@@ -21,7 +19,7 @@ const GroupCreationPage = () => {
         onPress={() => addMember(name)}
       />
       <FlatList
-        data={members}
+        data={group.members}
         renderItem={({ item }) => <Text>{item.name}</Text>}
         keyExtractor={(item) => item.name}
       />
@@ -29,4 +27,13 @@ const GroupCreationPage = () => {
   );
 }
 
-export default GroupCreationPage;
+const mapStateToProps = (state) => ({
+  group: state.group
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setGroupName: (name) => dispatch({ type: 'SET_GROUP_NAME', name }),
+  addMember: (member) => dispatch({ type: 'ADD_MEMBER', member }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupCreationPage);
