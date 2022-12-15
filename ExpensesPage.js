@@ -1,17 +1,29 @@
-import React from 'react';
-import { View, TextInput, Button, FlatList } from 'react-native-elements';
+import React, { useState } from 'react';
+import { View, TextInput, Button, Picker } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-const ExpensesPage = ({ expenses, addExpense }) => {
+const ExpensesPage = ({ groups, expenses, addExpense }) => {
+  const [selectedGroup, setSelectedGroup] = useState('');
   const [amount, setAmount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState('');
 
   const addExpense = () => {
-    addExpense({ amount, paymentMethod });
+    if (selectedGroup) {
+      addExpense({ group: selectedGroup, amount, paymentMethod });
+    }
   }
 
   return (
     <View>
+      <Picker
+        selectedValue={selectedGroup}
+        onValueChange={setSelectedGroup}
+      >
+        <Picker.Item label="Select group" value="" />
+        {groups.map((group) => (
+          <Picker.Item key={group.name} label={group.name} value={group} />
+        ))}
+      </Picker>
       <TextInput
         placeholder="Enter expense amount"
         keyboardType="numeric"
