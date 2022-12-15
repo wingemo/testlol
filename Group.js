@@ -2,9 +2,13 @@ import React from 'react';
 import { View, TextInput, Button, FlatList } from 'react-native-elements';
 import { connect } from 'react-redux';
 
-const GroupCreationPage = ({ group, setGroupName, addMember }) => {
+const GroupCreationPage = ({ group, setGroupName, addMember, addGroup }) => {
   const addMember = (name) => {
     addMember(name);
+  }
+
+  const handleSubmit = () => {
+    addGroup(group);
   }
 
   return (
@@ -22,6 +26,10 @@ const GroupCreationPage = ({ group, setGroupName, addMember }) => {
         data={group.members}
         renderItem={({ item }) => <Text>{item.name}</Text>}
         keyExtractor={(item) => item.name}
+      />
+      <Button
+        title="Finish"
+        onPress={handleSubmit}
       />
     </View>
   );
